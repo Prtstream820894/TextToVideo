@@ -18,18 +18,15 @@ steps:
 uses: actions/checkout@v4
 
   - name: Install FFmpeg
-    run: |
-      sudo apt-get update
-      sudo apt-get install -y ffmpeg fonts-dejavu-core
+    run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
 
   - name: Generate MP4
     run: |
-      TITLE="$(cat title.txt)"
       mkdir -p output
       ffmpeg -y \
         -f lavfi \
         -i "color=c=0x101827:s=720x1280:r=30:d=8" \
-        -vf "drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:textfile=title.txt:fontcolor=white:fontsize=52:x=(w-text_w)/2:y=(h-text_h)/2:box=1:boxcolor=0x00000088:boxborderw=24:line_spacing=18:fix_bounds=1,fade=t=in:st=0:d=0.7,fade=t=out:st=7:d=1" \
+        -vf "drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:textfile=title.txt:fontcolor=white:fontsize=52:x=(w-text_w)/2:y=(h-text_h)/2:box=1:boxcolor=0x00000088:boxborderw=24,fade=t=in:st=0:d=0.7,fade=t=out:st=7:d=1" \
         -c:v libx264 \
         -pix_fmt yuv420p \
         -movflags +faststart \
